@@ -77,6 +77,7 @@ namespace UDL.Model
             binWriter.Close();
             binReader.Close();
 
+
             Debug.WriteLine("Download done");
 
             t.Abort();
