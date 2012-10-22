@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Windows.Forms;
+using UDL.Controller;
 using UDL.View;
 
 namespace UDL
@@ -18,7 +19,7 @@ namespace UDL
         [STAThread]
         public static void Main(string[] args)
         {
-            Application.Run(new UDLView());
+            new UDLController();
 
             /*
             //http://www.youtube.com/v/ZoEOPEkuQ8I?version=3&amp;autohide=1

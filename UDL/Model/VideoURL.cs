@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -8,36 +9,99 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using UDL.Model.Observer;
 
 namespace UDL.Model
 {
-    public class VideoURL
+    public class VideoURL : Subject
     {
-         
+        private static readonly int HISTORIC_DL_MAX = 5;
+
         //public int iTag { get; set; }
         public String Quality { get; set; }
-        public String URL { get; set; }
         public String SIG { get; set; }
         public String Type { get; set; }
 
         private Video _video = null;
         private ulong _totalSize = 0;
         private ulong _downloadedSize = 0;
-
+        private bool _isDownloading = false;
+        private BackgroundWorker _backGroundWorker = null;
+        private string _videoURL = null;
 
         public VideoURL(Video aRelatedVideo)
         {
             this._video = aRelatedVideo;
+            
         }
 
-        public void Download(String aOutputFolder)
+        #region Properties
+        public ulong Size
         {
+            get { return this._totalSize; }
+        }
+
+        public String BaseURL
+        {
+            get
+            {
+                return this._videoURL;
+            }
+            set
+            {
+                this._videoURL = value;
+                this.GetSize();
+            }
+        }
+
+        public String DownloadURL
+        {
+            //String downloadURL = this.URL + "&signature=" + this.SIG;
+            get { return String.Format("{0}&signature={1}", this.BaseURL, this.SIG); }
+        }
+        #endregion
+
+        private void GetSize()
+        {
+            HttpWebResponse webResponse = null;
+            HttpWebRequest webRequest = null;
+
+            try
+            {
+                webRequest = WebRequest.Create(this.DownloadURL) as HttpWebRequest;
+                webResponse = webRequest.GetResponse() as HttpWebResponse;
+
+                //Get size
+                NameValueCollection headers = webResponse.Headers;
+                this._totalSize = Convert.ToUInt64(headers["Content-Length"]);
+            }
+            catch (Exception e)
+            {
+                throw new UdlVUrlException(this, e.Message, e);
+            }
+            finally
+            {
+                if (webResponse != null)
+                {
+                    webResponse.Close();
+                }
+            }
+        }
+
+        public void Download(String aOutputFolder, BackgroundWorker aBackGroundWorker)
+        {
+            if (_isDownloading)
+            {
+                throw new Exception("Video already downloading");
+            }
+
             Thread t = new Thread(new ThreadStart(DownloadProgress));
             t.Start();
 
+            this._backGroundWorker = aBackGroundWorker;
             String[] illegalChars = { "/", "?", "<", ">", "\\", ":", "*", "|", "\"" };
             Debug.WriteLine("Download started");
-            byte[] buffer = new byte[2048];
+            byte[] buffer = new byte[10000];
             String extension = this.GetExtension();
             String outputFile = String.Format("{0}_{1}.{2}", this._video.Author, this._video.Title, extension);
 
@@ -48,12 +112,7 @@ namespace UDL.Model
 
             outputFile = Path.Combine(aOutputFolder, outputFile);
 
-           
-
-            String downloadURL = this.URL + "&signature=" + this.SIG;
-
-
-            HttpWebRequest webRequest = WebRequest.Create(downloadURL) as HttpWebRequest;
+            HttpWebRequest webRequest = WebRequest.Create(this.DownloadURL) as HttpWebRequest;
             HttpWebResponse webResponse = webRequest.GetResponse() as HttpWebResponse;
 
             BinaryWriter binWriter = new BinaryWriter(File.Open(outputFile, FileMode.Create));
@@ -81,12 +140,14 @@ namespace UDL.Model
             Debug.WriteLine("Download done");
 
             t.Abort();
+            this._isDownloading = false;
         }
 
         private void DownloadProgress()
         {
+            int percentage = 0;
             ulong previousSize = 0;
-            int[] historicBytePerSecond = new int[3];
+            int[] historicBytePerSecond = new int[HISTORIC_DL_MAX];
             int historicIndex = 0;
 
             while (true)
@@ -96,12 +157,21 @@ namespace UDL.Model
 
                 historicBytePerSecond[historicIndex] = bytePerSecond;
 
-                Debug.WriteLine(ConvertByteString(AverageBytePerSecond(historicBytePerSecond)) + " " + ConvertByteString(this._downloadedSize) + " / " + ConvertByteString(this._totalSize));
+                String update = ConvertByteString(AverageBytePerSecond(historicBytePerSecond)) + " " + ConvertByteString(this._downloadedSize) + " / " + ConvertByteString(this._totalSize);
+
+                if (this._totalSize > 0)
+                {
+                    percentage = (int)((this._downloadedSize * 100) / this._totalSize);
+                }
+
+                this._backGroundWorker.ReportProgress(percentage, update);
+
+                Debug.WriteLine(update);
                 historicIndex++;
 
                 previousSize = this._downloadedSize;
 
-                if (historicIndex >= 3)
+                if (historicIndex >= HISTORIC_DL_MAX)
                 {
                     historicIndex = 0;
                 }
@@ -110,10 +180,14 @@ namespace UDL.Model
 
         private float AverageBytePerSecond(int[] aHistoricBytePerSecond)
         {
+            float bytePerSecondTotal = 0.0f;
 
-            float bytePerSecondTotal = aHistoricBytePerSecond[0] + aHistoricBytePerSecond[1] + aHistoricBytePerSecond[2];
+            foreach (int bps in aHistoricBytePerSecond)
+            {
+                bytePerSecondTotal += bps;
+            }
 
-            return bytePerSecondTotal / 3;
+            return bytePerSecondTotal / aHistoricBytePerSecond.Length;
         }
 
         private string GetExtension()
@@ -136,13 +210,13 @@ namespace UDL.Model
             }
             else
             {
-                throw new Exception("Unkown extension:" + this.Type);
+                throw new Exception("Unkown extension: " + this.Type);
             }
         }
 
         public override string ToString()
         {
-            return String.Format("{0} {1}", this.Type, this.Quality);
+            return String.Format("{0} {1} | {2}", this.Type, this.Quality, ConvertByteString(this._totalSize));
         }
 
         public string ConvertByteString(float aSize)

@@ -7,36 +7,93 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using UDL.Controller;
 using UDL.Model;
+using UDL.Model.Observer;
 
 namespace UDL.View
 {
-    public partial class UDLView : Form
+    public partial class UDLView : Form, IObserver
     {
-        public UDLView()
+        private UDLController _udlController = null;
+        private String _currentVideoID = string.Empty;
+
+        public UDLView(UDLController aUdlController)
         {
+            this._udlController = aUdlController;
             InitializeComponent();
-        }
 
-        private void buttonLoad_Click(object sender, EventArgs e)
-        {
-            Video video = new Video();
-            video.GetURLs(textBoxVideoURL.Text.Trim());
-
-            comboBoxVideoURL.Items.Clear();
-
-            comboBoxVideoURL.Items.AddRange(video.VideoURLs);
-
-            if (comboBoxVideoURL.Items.Count > 0)
-            {
-                comboBoxVideoURL.SelectedIndex = 0;
-            }
+            this.buttonLoad.Click += this._udlController.Load_Click;
+            this.buttonDownload.Click += this._udlController.Download_Click;
         }
 
         private void buttonDownload_Click(object sender, EventArgs e)
         {
             VideoURL vU = (VideoURL)comboBoxVideoURL.SelectedItem;
-            vU.Download("C:\\");
+
+            if(vU == null)
+            {
+                throw new NullReferenceException("VideoURL is null");
+            }
+
+            DownloadFile dl = new DownloadFile(vU, UDL.Properties.Settings.Default.OutputPath);
+            dl.Show();
+
         }
+
+        private void UDLView_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        #region Notifications
+        public void NotifyObserver(Subject aSubject)
+        {
+            if (aSubject.GetType() == typeof(Video))
+            {
+                this.NotifyObserver((Video)aSubject);
+            }
+            else
+            {
+                throw new Exception("NotifyObserver | Unknown subject");
+            }
+        }
+
+        public void NotifyObserver(Video aVideo)
+        {
+
+
+            if (!this._currentVideoID.Equals(aVideo.VideoID))
+            {
+                //Selected video ID changed, modify video information.
+                this.labelTitle.Text = String.Format("Title: {0}",aVideo.Title);
+                this.labelAuthor.Text = String.Format("Author: {0}", aVideo.Author);
+
+                this.comboBoxVideoURL.Items.Clear();
+
+                if (aVideo.VideoURLs.Length > 0)
+                {
+                    this.comboBoxVideoURL.Items.AddRange(aVideo.VideoURLs);
+                    this.groupBoxVidList.Enabled = true;
+                    this.comboBoxVideoURL.SelectedIndex = 0;
+                }
+                else
+                {
+                    this.groupBoxVidList.Enabled = false;
+                }
+
+                this._currentVideoID = aVideo.VideoID;
+            }          
+
+        }
+        #endregion
+
+        private void buttonSettings_Click(object sender, EventArgs e)
+        {
+            SettingsView sv = new SettingsView();
+            sv.ShowDialog();
+        }
+
+       
     }
 }

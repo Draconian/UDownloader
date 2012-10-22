@@ -9,6 +9,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
+using System.Windows.Forms;
+using UDL.Model.Observer;
 /*
 account_playback_token
 ptk
@@ -48,7 +50,7 @@ video_id
 */
 namespace UDL.Model
 {
-    public class Video
+    public class Video : Subject
     {
         private static readonly String VIDEO_INFO_URL = "http://www.youtube.com/get_video_info?video_id={0}";
         private static readonly String URL_VIDEOS = "url_encoded_fmt_stream_map";
@@ -58,13 +60,14 @@ namespace UDL.Model
         private String _mainURL = string.Empty;
         private String _videoInfoURL = String.Empty;
         private String _videoID = string.Empty;
-        private List<VideoURL> _videoUrls = new List<VideoURL>();
+        private List<VideoURL> _videoUrls;
 
         public Video()
         {
             
         }
 
+        #region Properties
         public VideoURL[] VideoURLs
         {
             get { return this._videoUrls.ToArray(); }
@@ -80,17 +83,29 @@ namespace UDL.Model
             get { return this._author; }
         }
 
+        public String VideoID
+        {
+            get { return this._videoID; }
+        }
+
+        #endregion
+
         public void GetURLs(String aURL)
         {
+            this._videoUrls = new List<VideoURL>();
             this._mainURL = aURL;
             this._videoID = this.GetVideoID();
             this._videoInfoURL = this.GetVideoInfoUrl(this._videoID);
             this.AnalyseVideoInfoURL(this._videoInfoURL);
+
+            this.NotifyObservers(this);
         }
 
         private String GetVideoID()
         {
-            String v = this._mainURL.Substring(this._mainURL.IndexOf('?'));
+            int indexInterogationPoint = this._mainURL.IndexOf('?');
+
+            String v = this._mainURL.Substring(indexInterogationPoint);
             NameValueCollection mainURLParams = HttpUtility.ParseQueryString(v);
 
             String id = mainURLParams["v"];
@@ -147,9 +162,25 @@ namespace UDL.Model
         {
             NameValueCollection videoInfoColl = HttpUtility.ParseQueryString(aURLInfo);
 
-            this._title = videoInfoColl["title"];
-            this._author = videoInfoColl["author"];
-            this.AnalyseVideoStreamMap(videoInfoColl["url_encoded_fmt_stream_map"]);
+            String status = videoInfoColl["status"];
+
+            if (status.Equals("ok"))
+            {
+                
+                this._title = videoInfoColl["title"];
+                this._author = videoInfoColl["author"];
+                this.AnalyseVideoStreamMap(videoInfoColl["url_encoded_fmt_stream_map"]);
+            }
+            else if(status.Equals("fail"))
+            {
+                String errno = videoInfoColl["errno"];
+                String reason = videoInfoColl["reason"];
+
+                MessageBox.Show("Error number" + errno + " Reason: " + reason, "Cannot load Youtube Video File"); 
+
+            }
+
+            
         }
 
         private void AnalyseVideoStreamMap(String aMap)
@@ -172,7 +203,7 @@ namespace UDL.Model
                 VideoURL vU = new VideoURL(this);
                 vU.Quality = qualities[i];
                 vU.SIG = sigs[i];
-                vU.URL = urls[i];
+                vU.BaseURL = urls[i];
                 vU.Type = types[i];
                 _videoUrls.Add(vU);
             }
