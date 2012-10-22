@@ -40,7 +40,7 @@ namespace UDL_Test
             VideoURL[] vus = v.VideoURLs;
 
             VideoURL vu = vus[5];
-            vu.Download(@"C:\");
+            vu.Download(@"C:\", null);
         }
 
         [TestMethod]

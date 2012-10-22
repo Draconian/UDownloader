@@ -183,7 +183,7 @@
             this.Controls.Add(this.groupBoxURL);
             this.Controls.Add(this.groupBoxVidList);
             this.Name = "UDLView";
-            this.Text = "UDLView";
+            this.Text = "UDownloader";
             this.Load += new System.EventHandler(this.UDLView_Load);
             this.groupBoxVidList.ResumeLayout(false);
             this.groupBoxVidList.PerformLayout();
