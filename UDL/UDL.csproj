@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller\UDLController.cs" />
+    <Compile Include="Model\DownloadVideo.cs" />
     <Compile Include="Model\Observer\IObserver.cs" />
     <Compile Include="Model\Observer\Subject.cs" />
     <Compile Include="Model\Parsers.cs" />
@@ -66,11 +67,11 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="View\DownloadFile.cs">
+    <Compile Include="View\DownloadVideoView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="View\DownloadFile.Designer.cs">
-      <DependentUpon>DownloadFile.cs</DependentUpon>
+    <Compile Include="View\DownloadVideoView.Designer.cs">
+      <DependentUpon>DownloadVideoView.cs</DependentUpon>
     </Compile>
     <Compile Include="View\SettingsView.cs">
       <SubType>Form</SubType>
@@ -97,8 +98,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\DownloadFile.resx">
-      <DependentUpon>DownloadFile.cs</DependentUpon>
+    <EmbeddedResource Include="View\DownloadVideoView.resx">
+      <DependentUpon>DownloadVideoView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\SettingsView.resx">
       <DependentUpon>SettingsView.cs</DependentUpon>

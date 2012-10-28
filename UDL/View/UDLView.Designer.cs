@@ -111,6 +111,7 @@
             this.textBoxVideoURL.Name = "textBoxVideoURL";
             this.textBoxVideoURL.Size = new System.Drawing.Size(596, 20);
             this.textBoxVideoURL.TabIndex = 5;
+            this.textBoxVideoURL.DoubleClick += new System.EventHandler(this.textBoxVideoURL_DoubleClick);
             // 
             // groupBoxURL
             // 

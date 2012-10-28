@@ -1,6 +1,6 @@
 ﻿namespace UDL.View
 {
-    partial class DownloadFile
+    partial class DownloadVideoView
     {
         /// <summary>
         /// Required designer variable.
@@ -29,10 +29,11 @@
         private void InitializeComponent()
         {
             this.backgroundWorkerDownload = new System.ComponentModel.BackgroundWorker();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.label1 = new System.Windows.Forms.Label();
+            this.progressBarVideoDownload = new System.Windows.Forms.ProgressBar();
             this.labelProg = new System.Windows.Forms.Label();
             this.buttonCancel = new System.Windows.Forms.Button();
+            this.labelLocalFile = new System.Windows.Forms.Label();
+            this.textBoxLocalPath = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // backgroundWorkerDownload
@@ -43,26 +44,19 @@
             this.backgroundWorkerDownload.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorkerDownload_ProgressChanged);
             this.backgroundWorkerDownload.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorkerDownload_RunWorkerCompleted);
             // 
-            // progressBar1
+            // progressBarVideoDownload
             // 
-            this.progressBar1.Location = new System.Drawing.Point(60, 36);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(476, 23);
-            this.progressBar1.TabIndex = 0;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 40);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(51, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Progress:";
+            this.progressBarVideoDownload.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBarVideoDownload.Location = new System.Drawing.Point(9, 36);
+            this.progressBarVideoDownload.Name = "progressBarVideoDownload";
+            this.progressBarVideoDownload.Size = new System.Drawing.Size(670, 23);
+            this.progressBarVideoDownload.TabIndex = 0;
             // 
             // labelProg
             // 
             this.labelProg.AutoSize = true;
-            this.labelProg.Location = new System.Drawing.Point(3, 9);
+            this.labelProg.Location = new System.Drawing.Point(6, 14);
             this.labelProg.Name = "labelProg";
             this.labelProg.Size = new System.Drawing.Size(51, 13);
             this.labelProg.TabIndex = 2;
@@ -70,7 +64,7 @@
             // 
             // buttonCancel
             // 
-            this.buttonCancel.Location = new System.Drawing.Point(461, 65);
+            this.buttonCancel.Location = new System.Drawing.Point(604, 78);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 3;
@@ -78,17 +72,39 @@
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
-            // DownloadFile
+            // labelLocalFile
+            // 
+            this.labelLocalFile.AutoSize = true;
+            this.labelLocalFile.Location = new System.Drawing.Point(6, 83);
+            this.labelLocalFile.Name = "labelLocalFile";
+            this.labelLocalFile.Size = new System.Drawing.Size(61, 13);
+            this.labelLocalFile.TabIndex = 4;
+            this.labelLocalFile.Text = "Local Path:";
+            // 
+            // textBoxLocalPath
+            // 
+            this.textBoxLocalPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxLocalPath.Location = new System.Drawing.Point(69, 79);
+            this.textBoxLocalPath.Name = "textBoxLocalPath";
+            this.textBoxLocalPath.ReadOnly = true;
+            this.textBoxLocalPath.Size = new System.Drawing.Size(529, 20);
+            this.textBoxLocalPath.TabIndex = 5;
+            // 
+            // DownloadVideoView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(543, 111);
+            this.ClientSize = new System.Drawing.Size(691, 111);
+            this.Controls.Add(this.textBoxLocalPath);
+            this.Controls.Add(this.labelLocalFile);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.labelProg);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.progressBar1);
-            this.Name = "DownloadFile";
+            this.Controls.Add(this.progressBarVideoDownload);
+            this.MaximumSize = new System.Drawing.Size(99999, 150);
+            this.Name = "DownloadVideoView";
             this.Text = "DownloadFile";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DownloadVideoView_FormClosing);
             this.Load += new System.EventHandler(this.DownloadFile_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -98,9 +114,10 @@
         #endregion
 
         private System.ComponentModel.BackgroundWorker backgroundWorkerDownload;
-        private System.Windows.Forms.ProgressBar progressBar1;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ProgressBar progressBarVideoDownload;
         private System.Windows.Forms.Label labelProg;
         private System.Windows.Forms.Button buttonCancel;
+        private System.Windows.Forms.Label labelLocalFile;
+        private System.Windows.Forms.TextBox textBoxLocalPath;
     }
 }

@@ -30,11 +30,11 @@ namespace UDL.Model.Observer
             this._observers.AddRange(aObservers);
         }
 
-        protected void NotifyObservers(Subject aSubject)
+        protected void NotifyObservers()
         {
             foreach (IObserver o in this._observers)
             {
-                o.NotifyObserver(aSubject);
+                o.NotifyObserver(this);
             }
         }
 

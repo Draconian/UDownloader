@@ -75,7 +75,7 @@ namespace UDL.Model
 
         public String Title
         {
-            get { return this._title; }
+            get { return DownloadVideo.FormatFileName(this._title); }
         }
 
         public String Author
@@ -98,7 +98,7 @@ namespace UDL.Model
             this._videoInfoURL = this.GetVideoInfoUrl(this._videoID);
             this.AnalyseVideoInfoURL(this._videoInfoURL);
 
-            this.NotifyObservers(this);
+            this.NotifyObservers();
         }
 
         private String GetVideoID()
