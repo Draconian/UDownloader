@@ -29,7 +29,19 @@ namespace UDL.Controller
 
         public void Download_Click(object sender, EventArgs e)
         {
+            VideoURL selectedVideoURL = this._udlView.comboBoxVideoURL.SelectedItem as VideoURL;
 
+            if (selectedVideoURL == null)
+            {
+                throw new NullReferenceException("VideoURL is null");
+            }
+
+            DownloadVideo downloadVideo = new DownloadVideo(selectedVideoURL, UDL.Properties.Settings.Default.OutputPath);
+
+            DownloadVideoView dl = new DownloadVideoView(downloadVideo);
+
+            downloadVideo.Attach(dl);
+            dl.Show();
         }
 
     }

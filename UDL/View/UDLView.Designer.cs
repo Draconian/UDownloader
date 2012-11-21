@@ -94,7 +94,6 @@
             this.buttonDownload.TabIndex = 6;
             this.buttonDownload.Text = "Download";
             this.buttonDownload.UseVisualStyleBackColor = true;
-            this.buttonDownload.Click += new System.EventHandler(this.buttonDownload_Click);
             // 
             // label2
             // 
@@ -199,7 +198,7 @@
         #endregion
 
         private System.Windows.Forms.Button buttonLoad;
-        private System.Windows.Forms.ComboBox comboBoxVideoURL;
+        internal System.Windows.Forms.ComboBox comboBoxVideoURL;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBoxVidList;
         private System.Windows.Forms.Button buttonDownload;
