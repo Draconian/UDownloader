@@ -115,14 +115,9 @@ namespace UDL.Model
             }
         }
 
-
-
         public override string ToString()
         {
-            return String.Format("{0} {1} | {2}", this.Type, this.Quality, DownloadVideo.ConvertByteString(this._totalSize));
+            return String.Format("{0} : {1} | {2}", this.Type, this.Quality, DownloadVideo.ConvertByteString(this._totalSize));
         }
-
-        
-
     }
 }

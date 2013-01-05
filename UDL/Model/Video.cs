@@ -56,12 +56,12 @@ namespace UDL.Model
         private static readonly String VIDEO_INFO_URL = "http://www.youtube.com/get_video_info?video_id={0}";
         private static readonly String URL_VIDEOS = "url_encoded_fmt_stream_map";
 
-        private String _title = string.Empty;
-        private String _author = String.Empty;
-        private String _mainURL = string.Empty;
-        private String _videoInfoURL = String.Empty;
-        private String _videoID = string.Empty;
-        private List<VideoURL> _videoUrls;
+        private String title = string.Empty;
+        private String author = String.Empty;
+        private String mainURL = string.Empty;
+        private String videoInfoURL = String.Empty;
+        private String videoID = string.Empty;
+        private List<VideoURL> videoUrls;
 
         public Video()
         {
@@ -71,42 +71,42 @@ namespace UDL.Model
         #region Properties
         public VideoURL[] VideoURLs
         {
-            get { return this._videoUrls.ToArray(); }
+            get { return this.videoUrls.ToArray(); }
         }
 
         public String Title
         {
-            get { return DownloadVideo.FormatFileName(this._title); }
+            get { return DownloadVideo.FormatFileName(this.title); }
         }
 
         public String Author
         {
-            get { return this._author; }
+            get { return this.author; }
         }
 
         public String VideoID
         {
-            get { return this._videoID; }
+            get { return this.videoID; }
         }
 
         #endregion
 
         public void GetURLs(String aURL)
         {
-            this._videoUrls = new List<VideoURL>();
-            this._mainURL = aURL;
-            this._videoID = this.GetVideoID();
-            this._videoInfoURL = this.GetVideoInfoUrl(this._videoID);
-            this.AnalyseVideoInfoURL(this._videoInfoURL);
+            this.videoUrls = new List<VideoURL>();
+            this.mainURL = aURL;
+            this.videoID = this.GetVideoID();
+            this.videoInfoURL = this.GetVideoInfoUrl(this.videoID);
+            this.AnalyseVideoInfoURL(this.videoInfoURL);
 
             this.NotifyObservers();
         }
 
         private String GetVideoID()
         {
-            int indexInterogationPoint = this._mainURL.IndexOf('?');
+            int indexInterogationPoint = this.mainURL.IndexOf('?');
 
-            String v = this._mainURL.Substring(indexInterogationPoint);
+            String v = this.mainURL.Substring(indexInterogationPoint);
             NameValueCollection mainURLParams = HttpUtility.ParseQueryString(v);
 
             String id = mainURLParams["v"];
@@ -168,8 +168,8 @@ namespace UDL.Model
             if (status.Equals("ok"))
             {
 
-                this._title = urlParser.extractTitle();
-                this._author = urlParser.extractAuthor();
+                this.title = urlParser.extractTitle();
+                this.author = urlParser.extractAuthor();
 
                 this.AnalyseVideoStreamMap(urlParser.extractStreamMap());
             }
@@ -197,7 +197,7 @@ namespace UDL.Model
                 videoURL.Type = vidInfoParser.extractType();
                 videoURL.SIG = vidInfoParser.extractSig();
                 videoURL.BaseURL = vidInfoParser.extractURL();
-                this._videoUrls.Add(videoURL);
+                this.videoUrls.Add(videoURL);
             }
         }
 

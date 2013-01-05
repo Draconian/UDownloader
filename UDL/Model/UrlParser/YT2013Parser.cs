@@ -17,12 +17,12 @@ namespace UDL.Model.UrlParser
         private string statusRegex = "status=(.*?)&";
         private string thumbnailUrlRegex = "thumbnail_url=(.*?)&";
         private string streamMapRegex = "url_encoded_fmt_stream_map=(.*?)&";
-        private string errnoRegex = "errno=(.*?)&?";
-        private string reasonRegex = "reason=(.*?)&?";
+        private string errnoRegex = "errorcode=(.*?)&";
+        private string reasonRegex = "reason=(.*?)&";
 
         public YT2013Parser(String videoURL)
         {
-            this.videoURL = videoURL;
+            this.videoURL = videoURL + "&";
         }
 
         public String extractAuthor()

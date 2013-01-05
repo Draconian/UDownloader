@@ -20,7 +20,7 @@ namespace UDL.Model.UrlParser
 
         public YT2013VideoInfoParser(String videoInfoUrl)
         {
-            this.videoInfoUrl = videoInfoUrl;
+            this.videoInfoUrl = videoInfoUrl + "&";
         }
 
 
@@ -33,6 +33,11 @@ namespace UDL.Model.UrlParser
             String type = match.Groups[1].Value;
 
             type = HttpUtility.UrlDecode(type);
+
+            if (type.Contains(";"))
+            {
+                type = type.Substring(0, type.IndexOf(";")).Trim();
+            }
 
             return type;
         }
