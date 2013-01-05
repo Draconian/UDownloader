@@ -8,7 +8,7 @@ using System.Web;
 
 namespace UDL.Model.UrlParser
 {
-    public class YT2013VideoInfoParser
+    public class YT2013VideoInfoParser : IVideoInfoUrlParser
     {
         private static Char[] videoInfoSplitter = { ',' };
 

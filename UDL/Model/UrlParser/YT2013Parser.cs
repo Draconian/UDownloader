@@ -8,7 +8,7 @@ using System.Web;
 
 namespace UDL.Model.UrlParser
 {
-    public class YT2013Parser
+    public class YT2013Parser : IUrlParser
     {
         protected String videoURL = String.Empty;
         private string authorRegex = "author=(.*?)&";

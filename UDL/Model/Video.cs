@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Windows.Forms;
 using UDL.Model.Observer;
+using UDL.Model.UrlParser;
 /*
 account_playback_token
 ptk
@@ -160,21 +161,22 @@ namespace UDL.Model
 
         private void AnalyseVideoInfoURL(String aURLInfo)
         {
-            NameValueCollection videoInfoColl = HttpUtility.ParseQueryString(aURLInfo);
+            IUrlParser urlParser = new YT2013Parser(aURLInfo);
 
-            String status = videoInfoColl["status"];
+            String status = urlParser.extractStatus();
 
             if (status.Equals("ok"))
             {
-                
-                this._title = videoInfoColl["title"];
-                this._author = videoInfoColl["author"];
-                this.AnalyseVideoStreamMap(videoInfoColl["url_encoded_fmt_stream_map"]);
+
+                this._title = urlParser.extractTitle();
+                this._author = urlParser.extractAuthor();
+
+                this.AnalyseVideoStreamMap(urlParser.extractStreamMap());
             }
             else if(status.Equals("fail"))
             {
-                String errno = videoInfoColl["errno"];
-                String reason = videoInfoColl["reason"];
+                String errno = urlParser.extractErrNo();
+                String reason = urlParser.extractReason();
 
                 MessageBox.Show("Error number" + errno + " Reason: " + reason, "Cannot load Youtube Video File"); 
 
@@ -185,27 +187,17 @@ namespace UDL.Model
 
         private void AnalyseVideoStreamMap(String aMap)
         {
-            NameValueCollection urlMapColl = HttpUtility.ParseQueryString(aMap);
-
-            Char[] splitterVirg = {','};
-            Char[] splitterPVirg = {';'};
-
-            String type = urlMapColl["type"];
-            String[] types = TypeParser.Parse(type);
-
-            String[] urls = urlMapColl["url"].Split(splitterVirg);
-            String[] sigs = urlMapColl["sig"].Split(splitterVirg);
-            String[] qualities = QualityParser.Parse(urlMapColl["quality"]);
+            IVideoInfoUrlParser[] vidInfoParsers = YT2013VideoInfoParser.Split(aMap);
 
 
-            for (int i = 0; i < urls.Length; i++)
+            foreach(IVideoInfoUrlParser vidInfoParser in vidInfoParsers)
             {
-                VideoURL vU = new VideoURL(this);
-                vU.Quality = qualities[i];
-                vU.SIG = sigs[i];
-                vU.BaseURL = urls[i];
-                vU.Type = types[i];
-                _videoUrls.Add(vU);
+                VideoURL videoURL = new VideoURL(this);
+                videoURL.Quality = vidInfoParser.extractQuality();
+                videoURL.Type = vidInfoParser.extractType();
+                videoURL.SIG = vidInfoParser.extractSig();
+                videoURL.BaseURL = vidInfoParser.extractURL();
+                this._videoUrls.Add(videoURL);
             }
         }
 
