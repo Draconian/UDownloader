@@ -53,6 +53,9 @@
     <Compile Include="Model\Observer\Subject.cs" />
     <Compile Include="Model\Parsers.cs" />
     <Compile Include="Model\UDLException.cs" />
+    <Compile Include="Model\UrlParser\IUrlParser.cs" />
+    <Compile Include="Model\UrlParser\YT2013Parser.cs" />
+    <Compile Include="Model\UrlParser\YT2013VideoInfoParser.cs" />
     <Compile Include="Model\Video.cs" />
     <Compile Include="Model\VideoURL.cs" />
     <Compile Include="Program.cs" />
