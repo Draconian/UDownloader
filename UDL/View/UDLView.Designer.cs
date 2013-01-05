@@ -143,7 +143,7 @@
             this.labelLenght.Name = "labelLenght";
             this.labelLenght.Size = new System.Drawing.Size(43, 13);
             this.labelLenght.TabIndex = 3;
-            this.labelLenght.Text = "Lenght:";
+            this.labelLenght.Text = "Length:";
             // 
             // labelAuthor
             // 

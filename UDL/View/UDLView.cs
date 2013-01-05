@@ -54,6 +54,7 @@ namespace UDL.View
                 //Selected video ID changed, modify video information.
                 this.labelTitle.Text = String.Format("Title: {0}",aVideo.Title);
                 this.labelAuthor.Text = String.Format("Author: {0}", aVideo.Author);
+                this.labelLenght.Text = String.Format("Length: {0} seconds", aVideo.Length);
 
                 this.comboBoxVideoURL.Items.Clear();
 

@@ -12,6 +12,7 @@ using System.Web;
 using System.Windows.Forms;
 using UDL.Model.Observer;
 using UDL.Model.UrlParser;
+
 /*
 account_playback_token
 ptk
@@ -61,6 +62,7 @@ namespace UDL.Model
         private String mainURL = string.Empty;
         private String videoInfoURL = String.Empty;
         private String videoID = string.Empty;
+        private int length = 0;
         private List<VideoURL> videoUrls;
 
         public Video()
@@ -87,6 +89,11 @@ namespace UDL.Model
         public String VideoID
         {
             get { return this.videoID; }
+        }
+
+        public int Length
+        {
+            get { return this.length; }
         }
 
         #endregion
@@ -170,7 +177,7 @@ namespace UDL.Model
 
                 this.title = urlParser.extractTitle();
                 this.author = urlParser.extractAuthor();
-
+                this.length = urlParser.extractLengthSeconds();
                 this.AnalyseVideoStreamMap(urlParser.extractStreamMap());
             }
             else if(status.Equals("fail"))
