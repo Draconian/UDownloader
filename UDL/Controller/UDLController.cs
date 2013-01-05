@@ -24,7 +24,6 @@ namespace UDL.Controller
             Video video = new Video();
             video.Attach(this._udlView);
             video.GetURLs(this._udlView.textBoxVideoURL.Text.Trim());
-
         }
 
         public void Download_Click(object sender, EventArgs e)
