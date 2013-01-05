@@ -51,7 +51,6 @@
     <Compile Include="Model\DownloadVideo.cs" />
     <Compile Include="Model\Observer\IObserver.cs" />
     <Compile Include="Model\Observer\Subject.cs" />
-    <Compile Include="Model\Parsers.cs" />
     <Compile Include="Model\UDLException.cs" />
     <Compile Include="Model\UrlParser\IUrlParser.cs" />
     <Compile Include="Model\UrlParser\IVideoInfoUrlParser.cs" />

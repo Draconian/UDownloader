@@ -20,31 +20,31 @@ namespace UDL.Model
         public String SIG { get; set; }
         public String Type { get; set; }
 
-        private Video _video = null;
-        private string _videoURL = null;
-        private ulong _totalSize;
+        private Video video = null;
+        private string videoURL = null;
+        private ulong totalSize;
 
         public VideoURL(Video aRelatedVideo)
         {
-            this._video = aRelatedVideo;
+            this.video = aRelatedVideo;
             
         }
 
         #region Properties
         public ulong Size
         {
-            get { return this._totalSize; }
+            get { return this.totalSize; }
         }
 
         public String BaseURL
         {
             get
             {
-                return this._videoURL;
+                return this.videoURL;
             }
             set
             {
-                this._videoURL = value;
+                this.videoURL = value;
                 this.GetSize();
             }
         }
@@ -84,7 +84,7 @@ namespace UDL.Model
 
         public Video Video
         {
-            get { return this._video; }
+            get { return this.video; }
         }
         #endregion
 
@@ -100,7 +100,7 @@ namespace UDL.Model
 
                 //Get size
                 NameValueCollection headers = webResponse.Headers;
-                this._totalSize = Convert.ToUInt64(headers["Content-Length"]);
+                this.totalSize = Convert.ToUInt64(headers["Content-Length"]);
             }
             catch (Exception e)
             {
@@ -117,7 +117,7 @@ namespace UDL.Model
 
         public override string ToString()
         {
-            return String.Format("{0} : {1} | {2}", this.Type, this.Quality, DownloadVideo.ConvertByteString(this._totalSize));
+            return String.Format("{0} : {1} | {2}", this.Type, this.Quality, DownloadVideo.ConvertByteString(this.totalSize));
         }
     }
 }
