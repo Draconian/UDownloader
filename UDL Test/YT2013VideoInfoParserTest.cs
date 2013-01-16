@@ -19,7 +19,7 @@ namespace UDL_Test
             YT2013VideoInfoParser videoInfoParser = new YT2013VideoInfoParser(this.videoInfoURLTest);
             String type = videoInfoParser.extractType();
 
-            Assert.AreEqual("video/webm; codecs=\"vp8.0, vorbis\"", type);
+            Assert.AreEqual("video/webm", type);
         }
 
         [TestMethod]
