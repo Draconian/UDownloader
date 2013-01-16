@@ -12,7 +12,7 @@ Use the following command in cmd.exe to compile the solution:
     /p:Configuration=release /p:Platform="Any CPU"
     
 ###Execute
-You will find the executable in the directory bin\Release  
+You will find the executable in the directory UDL\bin\Release  
 Simply double click on UDownloader.exe to launch the app.
 
 
