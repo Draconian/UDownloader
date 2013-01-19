@@ -55,11 +55,11 @@ namespace UDL.View
         {
             this.Invoke((MethodInvoker)delegate
             {
-                float pourcentage = (float)this._videoDownload.DownloadedLenght * 100 / (float)this._videoDownload.Lenght;
+                float pourcentage = (float)this._videoDownload.DownloadedLength * 100 / (float)this._videoDownload.Length;
                 this.progressBarVideoDownload.Value = (int)pourcentage;
 
                 this.textBoxLocalPath.Text = this._videoDownload.LocalPath;
-                this.labelProg.Text = String.Format("Progress: {0} / {1} | {2:0.00}/sec", DownloadVideo.ConvertByteString(this._videoDownload.DownloadedLenght),DownloadVideo.ConvertByteString(this._videoDownload.Lenght), DownloadVideo.ConvertByteString(this._videoDownload.AverageDownloadSpeed()));
+                this.labelProg.Text = String.Format("Progress: {0} / {1} | {2:0.00}/sec", DownloadVideo.ConvertByteString(this._videoDownload.DownloadedLength),DownloadVideo.ConvertByteString(this._videoDownload.Length), DownloadVideo.ConvertByteString(this._videoDownload.AverageDownloadSpeed()));
                 
                
                 Debug.WriteLine(DownloadVideo.ConvertByteString(this._videoDownload.AverageDownloadSpeed()));

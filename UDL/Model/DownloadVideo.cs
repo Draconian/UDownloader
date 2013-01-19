@@ -49,12 +49,12 @@ namespace UDL.Model
             }
         }
 
-        public float Lenght
+        public float Length
         {
             get { return (float)this.videoURLDownload.Size; }
         }
 
-        public float DownloadedLenght
+        public float DownloadedLength
         {
             get { return (float)this.downloadedSize; }
         }
