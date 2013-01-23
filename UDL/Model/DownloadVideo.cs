@@ -4,27 +4,32 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Timers;
 using UDL.Model.Observer;
 
+[assembly: InternalsVisibleTo("UDL Test")]
+
 namespace UDL.Model
 {
+    
+
     public class DownloadVideo : Subject
     {
-        private static readonly int HISTORIC_DOWNLOAD_MAX = 5;
-        private static readonly int TIMER_DOWNLOAD_INTERVAL = 1000;
+        internal static readonly int HISTORIC_DOWNLOAD_MAX = 5;
+        internal static readonly int TIMER_DOWNLOAD_INTERVAL = 1000;
 
-        private ulong downloadedSize = 0;
-        private ulong previousDownloadSize = 0;
+        internal ulong downloadedSize = 0;
+        internal ulong previousDownloadSize = 0;
 
-        private List<int> historicDownloadSpeedPerSecond = new List<int>();
-        private VideoURL videoURLDownload = null;
-        private String outputFolder = null;
-        private Timer timerDownload = null;
-        
-        private bool isDownloading = false;
-        private bool isDownloadFinish = false;
+        internal List<int> historicDownloadSpeedPerSecond = new List<int>();
+        internal VideoURL videoURLDownload = null;
+        internal String outputFolder = null;
+        internal Timer timerDownload = null;
+
+        internal bool isDownloading = false;
+        internal bool isDownloadFinish = false;
 
         public DownloadVideo(VideoURL aVideoURL, String aOutputFolder)
         {
