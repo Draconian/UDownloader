@@ -6,11 +6,13 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using UDL.Model.Observer;
 
+[assembly: InternalsVisibleTo("UDL Test")]
 namespace UDL.Model
 {
     public class VideoURL
@@ -20,9 +22,9 @@ namespace UDL.Model
         public String SIG { get; set; }
         public String Type { get; set; }
 
-        private Video video = null;
-        private string videoURL = null;
-        private ulong totalSize;
+        internal Video video = null;
+        internal string videoURL = null;
+        internal ulong totalSize;
 
         public VideoURL(Video aRelatedVideo)
         {
@@ -88,7 +90,7 @@ namespace UDL.Model
         }
         #endregion
 
-        private void GetSize()
+        internal void GetSize()
         {
             HttpWebResponse webResponse = null;
             HttpWebRequest webRequest = null;

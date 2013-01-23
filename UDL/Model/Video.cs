@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -13,57 +14,20 @@ using System.Windows.Forms;
 using UDL.Model.Observer;
 using UDL.Model.UrlParser;
 
-/*
-account_playback_token
-ptk
-url_encoded_fmt_stream_map
-allow_embed
-vq
-fexp
-allow_ratings
-keywords
-track_embed
-view_count
-video_verticals
-fmt_list
-author
-muted
-length_seconds
-pltype
-iurlmaxres
-has_cc
-tmi
-ftoken
-iurlsd
-status
-watermark
-timestamp
-storyboard_spec
-plid
-endscreen_module
-hl
-no_get_video_log
-avg_rating
-title
-sendtmp
-token
-thumbnail_url
-video_id
-*/
+[assembly: InternalsVisibleTo("UDL Test")]
 namespace UDL.Model
 {
     public class Video : Subject
     {
-        private static readonly String VIDEO_INFO_URL = "http://www.youtube.com/get_video_info?video_id={0}";
-        private static readonly String URL_VIDEOS = "url_encoded_fmt_stream_map";
+        internal static readonly String VIDEO_INFO_URL = "http://www.youtube.com/get_video_info?video_id={0}";
 
-        private String title = string.Empty;
-        private String author = String.Empty;
-        private String mainURL = string.Empty;
-        private String videoInfoURL = String.Empty;
-        private String videoID = string.Empty;
-        private int length = 0;
-        private List<VideoURL> videoUrls;
+        internal String title = string.Empty;
+        internal String author = String.Empty;
+        internal String mainURL = string.Empty;
+        internal String videoInfoURL = String.Empty;
+        internal String videoID = string.Empty;
+        internal int length = 0;
+        internal List<VideoURL> videoUrls;
 
         public Video()
         {
