@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="OutputPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">d:\VIDEO\</Value>
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

@@ -13,6 +13,8 @@ namespace UDL.View
 {
     public partial class SettingsView : Form
     {
+        private Boolean cancelFormClosing = false;
+
         public SettingsView()
         {
             InitializeComponent();
@@ -36,8 +38,6 @@ namespace UDL.View
 
 
             UDL.Properties.Settings.Default.OutputPath = this.textBoxSavePath.Text;
-
-
             UDL.Properties.Settings.Default.Save();
 
             this.Close();
@@ -50,7 +50,24 @@ namespace UDL.View
 
         private void buttonCancel_Click(object sender, EventArgs e)
         {
-            this.Close();
+            if(String.IsNullOrWhiteSpace(UDL.Properties.Settings.Default.OutputPath))
+            {
+                MessageBox.Show("You must select a default video folder.");
+                this.cancelFormClosing = true;
+            }
+            else
+            {
+                this.Close();
+            }
+        }
+
+        private void SettingsView_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (cancelFormClosing)
+            {
+                e.Cancel = true;
+                this.cancelFormClosing = false;
+            }
         }
     }
 }

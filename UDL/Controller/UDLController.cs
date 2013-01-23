@@ -16,6 +16,13 @@ namespace UDL.Controller
         public UDLController()
         {
             this._udlView = new UDLView(this);
+
+            if (String.IsNullOrWhiteSpace(UDL.Properties.Settings.Default.OutputPath))
+            {
+                SettingsView settingView = new SettingsView();
+                settingView.ShowDialog();
+            }
+
             Application.Run(this._udlView);
         }
 

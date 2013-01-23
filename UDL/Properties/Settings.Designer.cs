@@ -25,7 +25,7 @@ namespace UDL.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("d:\\VIDEO\\")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string OutputPath {
             get {
                 return ((string)(this["OutputPath"]));

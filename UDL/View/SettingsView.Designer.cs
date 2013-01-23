@@ -97,6 +97,7 @@
             this.Controls.Add(this.label1);
             this.Name = "SettingsView";
             this.Text = "UDownloader Settings";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingsView_FormClosing);
             this.Load += new System.EventHandler(this.SettingsView_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

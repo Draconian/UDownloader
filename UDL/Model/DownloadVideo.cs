@@ -7,6 +7,7 @@ using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Timers;
+using System.Windows.Forms;
 using UDL.Model.Observer;
 
 [assembly: InternalsVisibleTo("UDL Test")]
@@ -26,7 +27,7 @@ namespace UDL.Model
         internal List<int> historicDownloadSpeedPerSecond = new List<int>();
         internal VideoURL videoURLDownload = null;
         internal String outputFolder = null;
-        internal Timer timerDownload = null;
+        internal System.Timers.Timer timerDownload = null;
 
         internal bool isDownloading = false;
         internal bool isDownloadFinish = false;
@@ -36,7 +37,7 @@ namespace UDL.Model
             this.videoURLDownload = aVideoURL;
             this.outputFolder = aOutputFolder;
 
-            this.timerDownload = new Timer();
+            this.timerDownload = new System.Timers.Timer();
 
             this.timerDownload.Elapsed += new ElapsedEventHandler(timerSecond_Tick);
             this.timerDownload.Interval = TIMER_DOWNLOAD_INTERVAL;
@@ -48,9 +49,7 @@ namespace UDL.Model
         {
             get
             {
-                return Path.Combine(this.outputFolder, String.Format("{0}_{1}.{2}", this.videoURLDownload.Video.Author, 
-                    this.videoURLDownload.Video.Title, 
-                    this.videoURLDownload.FileExtension));
+                return this.CreateLocalPath();
             }
         }
 
@@ -184,5 +183,12 @@ namespace UDL.Model
         }
 
         #endregion
+
+        internal string CreateLocalPath()
+        {
+            return Path.Combine(this.outputFolder, String.Format("{0}_{1}.{2}", this.videoURLDownload.Video.Author,
+                   this.videoURLDownload.Video.Title,
+                   this.videoURLDownload.FileExtension));
+        }
     }
 }
